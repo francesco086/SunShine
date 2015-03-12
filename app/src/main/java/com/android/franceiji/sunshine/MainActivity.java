@@ -1,15 +1,19 @@
 package com.android.franceiji.sunshine;
 
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -53,6 +57,8 @@ public class MainActivity extends ActionBarActivity {
      */
     public static class PlaceholderFragment extends Fragment {
 
+        private ArrayAdapter<String> mForecastAdapter;
+
         public PlaceholderFragment() {
         }
 
@@ -60,6 +66,45 @@ public class MainActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+
+            String[] forecastArray = {
+                    "Today - Sunny - 88/63",
+                    "Tomorrow - Cloudy - 86/66",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?",
+                    "Another day - BOH! - ?/?"
+            };
+
+            List<String> weekForecast = new ArrayList<String>(Arrays.asList(forecastArray));
+
+            mForecastAdapter = new ArrayAdapter<String>(
+                    //obtain the Context
+                    getActivity(),
+                    //ID of list item layout
+                    R.layout.list_item_forecast,
+                    //ID of the TextView to populate
+                    R.id.list_item_forecast_textview,
+                    //data
+                    weekForecast
+            );
+
+            //Get a reference to the ListView, and attach the adapter
+            ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
+            listView.setAdapter(mForecastAdapter);
+
             return rootView;
         }
     }
