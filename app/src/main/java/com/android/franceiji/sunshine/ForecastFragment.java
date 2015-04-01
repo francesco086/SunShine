@@ -1,5 +1,8 @@
 package com.android.franceiji.sunshine;
 
+import android.app.FragmentManager;
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -12,8 +15,10 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,6 +42,7 @@ import java.util.List;
 public class ForecastFragment extends Fragment {
 
     private ArrayAdapter<String> mForecastAdapter;
+    private FragmentManager supportFragmentManager;
 
     public ForecastFragment() {
     }
@@ -100,9 +106,40 @@ public class ForecastFragment extends Fragment {
         ListView listView = (ListView) rootView.findViewById(R.id.listview_forecast);
         listView.setAdapter(mForecastAdapter);
 
+        //Create a View when an item in the ListView is clicked
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                //Create a Toast
+                //Get the String corresponding to the item clicked
+                String forecast = mForecastAdapter.getItem(position);
+                //Get the Context
+                Context context = getActivity();
+                //Declare a toast object
+                Toast toast_forecast;
+                //Instantiate the toast
+                toast_forecast = Toast.makeText(context, forecast, Toast.LENGTH_SHORT);
+                //Display the toast
+                toast_forecast.show();
+
+                //Create a new Activity
+                //Declare the intent for opening DetailActivity
+                Intent intent_open_detail_activity;
+                //Instantiate the intent
+                intent_open_detail_activity = new Intent(getActivity(), DetailActivity.class);
+                //add the string forecast to the intent
+                intent_open_detail_activity.putExtra(Intent.EXTRA_TEXT, forecast);
+                //start the activity specified by the intent
+                startActivity(intent_open_detail_activity);
+
+            }
+        });
+
         return rootView;
 
         }
+
 
     public class FetchWeatherTask extends AsyncTask<String, Void, String[]>{
 
@@ -213,12 +250,15 @@ public class ForecastFragment extends Fragment {
                 //Refresh the screen with the result of doInBackground
                 List<String> weekForecast = new ArrayList<String>(Arrays.asList(result));
                 mForecastAdapter.clear();
-                mForecastAdapter.addAll(weekForecast);
+                for (String dayForecastStr : result){
+                    mForecastAdapter.add(dayForecastStr);
+                }
 
                 /*NOTA:
                 In alternativa si poteva notificare alla ListView il cambiamento
                 di mForecastAdapter tramite il comando:
 
+                mForecastAdapter.addAll(weekForecast); (richiede API 11)
                 mForecastAdapter.notifyDataSetChanged();
                 
                  */
