@@ -5,5 +5,9 @@
 
     <string name="action_settings">Settings</string>
 
+    <!-- Activities' names -->
     <string name="action_refresh">Refresh</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="settings_activity">Settings</string>
+
 </resources>
