@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- strings/label that the user will see -->
+    <array name="pref_units_options">
+        <item> Metric </item>
+        <item> Imperial </item>
+    </array>
+
+    <!-- values that will be contained from the fields -->
+    <array name="pref_units_values">
+        <item> metric </item>
+        <item> imperial </item>
+    </array>
+
+</resources>

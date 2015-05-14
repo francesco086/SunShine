@@ -1,8 +1,12 @@
 package com.android.franceiji.sunshine;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -43,8 +47,37 @@ public class MainActivity extends ActionBarActivity {
             return true;
         }
 
+        if (id == R.id.action_map) {
+            //Start the function showing on the map the location related to the weather
+            openPreferredLocationInMap();
+
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
+
+    private void openPreferredLocationInMap()
+    {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default));
+
+        Uri geo_location = Uri.parse("geo:0,0?").buildUpon().appendQueryParameter("q", location).build();
+
+        Intent show_on_map = new Intent(Intent.ACTION_VIEW);
+        show_on_map.setData(geo_location);
+
+        if (show_on_map.resolveActivity(getPackageManager()) != null)
+        {
+            startActivity(show_on_map);
+        }
+        else
+        {
+            final String LOG_TAG = "DISPLAY ON MAP";
+            Log.d(LOG_TAG, "Couldn't display location " + location);
+        }
+
+    }
 
 }
