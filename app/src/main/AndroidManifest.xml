@@ -35,6 +35,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.android.franceiji.sunshine.MainActivity" />
         </activity>
+        <activity
+            android:name=".ShareActivity"
+            android:label="@string/share_activity"
+            android:parentActivityName=".MainActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.android.franceiji.sunshine.MainActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -3,11 +3,14 @@
     <string name="app_name">SunShine</string>
     <string name="hello_world">Hello world!</string>
 
-    <!-- Settings' names -->
+    <!-- Settings' name -->
     <string name="settings_activity">Settings</string>
 
-    <!-- Settings' names -->
+    <!-- Settings' name -->
     <string name="action_map">Show location in a map</string>
+
+    <!-- Share name -->
+    <string name="share_activity">Share</string>
 
     <!-- Location's names -->
     <string name="pref_location_label">Location</string>
