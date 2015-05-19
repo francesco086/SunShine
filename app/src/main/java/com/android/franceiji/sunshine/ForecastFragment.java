@@ -3,9 +3,11 @@ package com.android.franceiji.sunshine;
 import android.app.FragmentManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -60,6 +62,29 @@ public class ForecastFragment extends Fragment {
         inflater.inflate(R.menu.forecastfragment, menu);
     }
 
+    //Define a function for updating the weather list
+    private void updateWeather()
+    {
+        //Get data from internet
+        FetchWeatherTask fetch_weather = new FetchWeatherTask();
+        //Get the shared preferences
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity()) ;
+        //define the string containing the location
+        String location = prefs.getString(getString(R.string.pref_location_key), getString(R.string.pref_location_default)) ;
+        //Log.v("ForecastFragment", "Location: " + location  ) ;
+        fetch_weather.execute(location);
+
+        //Display a Toast telling the location selected
+        Toast.makeText(getActivity(), location, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        updateWeather();
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -69,10 +94,7 @@ public class ForecastFragment extends Fragment {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_refresh) {
-            //Get data from internet
-            FetchWeatherTask fetch_weather = new FetchWeatherTask();
-            fetch_weather.execute("38000,fr");
-
+            updateWeather();
             return true;
         }
 
@@ -272,8 +294,16 @@ public class ForecastFragment extends Fragment {
             // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
+
+            //Format requested from openweatherapp
             String format = "json";
-            String units = "metric";
+
+            //Get the shared preferences
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getActivity()) ;
+            //define the string containing the preferred units
+            String units = prefs.getString(getString(R.string.pref_units_key), getString(R.string.pref_units_default)) ;
+
+            //How many days
             int numDays = 7;
 
             // Will contain the raw JSON response as a string.
